@@ -6,13 +6,7 @@
     <script src="https://cdn.bootcss.com/pagedown/1.0/Markdown.Converter.js"></script>
 </head>
 <body>
-<div id="root">
-    <h1>随笔</h1>
-    <h1>傲娇</h1>
-    <p><span tag="md/《春风十里不如你》影评.md">《春风十里不如你》影评</span></p>
-    <h1>学习</h1>
-    <p><span tag="md/docker-swarm集群.md">docker-swarm集群</span></p>
-    <h1>项目</h1></div>
+<div id="root"></div>
 </body>
 
 <script>
@@ -29,17 +23,16 @@
         });
     }
 
+    function getQueryString(name) {
+        const reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+        const r = (decodeURI(window.location.search.substr(1))).match(reg);
+        if (r != null) return unescape(r[2]);
+        return null;
+    }
+
     $(document).ready(function () {
-        $("span").each(function () {
-            let tag = $(this).attr("tag");
-            $(this).click(function () {
-                let a = document.createElement('a');
-                a.href = "/show.html?path=" + encodeURI(tag);
-                a.target = "_blank";
-                a.click();
-                a.remove();
-            })
-        })
+        let path = getQueryString("path");
+        show(path);
     });
 </script>
 
