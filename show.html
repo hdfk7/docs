@@ -33,7 +33,7 @@
     $(document).ready(function () {
         let path = getQueryString("path");
         document.title = path.replace("md/", "惜缘破军[") + "]";
-        show(path);
+        show(path + "?t=" + new Date().getDate());
     });
 </script>
 
