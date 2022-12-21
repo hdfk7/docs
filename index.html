@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>test</title>
+    <title>惜缘破军</title>
     <script src="https://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
     <script src="https://cdn.bootcss.com/pagedown/1.0/Markdown.Converter.js"></script>
 </head>
@@ -14,8 +14,7 @@
     $(document).ready(function () {
         $.ajax({
             url: '/README.md',
-            type: 'POST',
-            dataType: 'json',
+            type: 'get',
             success: function (data) {
                 const converter = new Markdown.Converter();
                 const html = converter.makeHtml(data);
