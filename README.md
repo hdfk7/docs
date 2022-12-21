@@ -6,6 +6,6 @@
 
 # 学习
 
-[docker swarm集群](md/docker swarm集群.md ':include')
+[docker-swarm集群](md/docker-swarm集群.md ':include')
 
 # 项目
