@@ -1,0 +1,104 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>惜缘破军</title>
+    <script src="https://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+    <script src="https://cdn.bootcss.com/pagedown/1.0/Markdown.Converter.js"></script>
+    <style>
+        span {
+            cursor: pointer;
+            color: #fa7516;
+        }
+
+        .tips {
+            width: 99%;
+            align-items: center;
+            justify-content: center;
+            position: absolute;
+            bottom: 20px;
+            text-align: center;
+            font-size: 12px;
+            color: gray;
+        }
+
+        a {
+            text-decoration: none;
+            color: #fa7516;
+        }
+
+        a:link {
+            text-decoration: none;
+        }
+
+        a:visited {
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: none;
+        }
+
+        a:active {
+            text-decoration: none;
+        }
+
+        a:focus {
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+<div id="root">
+    <h1>随笔</h1>
+
+
+    <h1>傲娇</h1>
+    <p><span tag="md/《春风十里不如你》影评.md">《春风十里不如你》影评</span></p>
+    <p><span tag="md/JetBrains产品激活程序.md">JetBrains产品激活程序</span></p>
+
+
+    <h1>学习</h1>
+    <p><span tag="md/docker-swarm集群.md">docker-swarm集群</span></p>
+    <p><span tag="md/Mysql按周，按月，按日，按小时分组统计数据.md">Mysql按周，按月，按日，按小时分组统计数据</span></p>
+    <p><span tag="md/阿里Java诊断工具arthas使用.md">阿里Java诊断工具arthas使用</span></p>
+
+
+    <h1>项目</h1></div>
+
+
+<div class="tips">
+    <a href="https://blog.csdn.net/qq_37157160?type=blog" target="_blank" style="display: block">CSDN博客</a>
+    <a href="https://mirrors.hdfk7.cn/static" target="_blank" style="display: block">静态资源</a>
+    <a href="https://beian.miit.gov.cn" target="_blank">蜀ICP备2022022340号-1</a>
+</div>
+</body>
+
+<script>
+    const converter = new Markdown.Converter();
+
+    function show(url) {
+        $.ajax({
+            url: url,
+            type: 'get',
+            success: function (data) {
+                const html = converter.makeHtml(data);
+                $('#root').html(html);
+            }
+        });
+    }
+
+    $(document).ready(function () {
+        $("span").each(function () {
+            let tag = $(this).attr("tag");
+            $(this).click(function () {
+                let a = document.createElement('a');
+                a.href = "/show.html?path=" + encodeURI(tag);
+                a.target = "_blank";
+                a.click();
+                a.remove();
+            })
+        })
+    });
+</script>
+
+</html>
