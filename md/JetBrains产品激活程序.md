@@ -1,6 +1,6 @@
 # JetBrains产品激活程序
 
-[ja-netfilter.jar](..%2Fstatic%2Fja-netfilter.jar)
+[ja-netfilter.jar](static/ja-netfilter.jar)
 
 该程序需要配合产品自定义vm参数，修改javaagent位置就行。
 
