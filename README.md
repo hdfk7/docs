@@ -52,7 +52,7 @@
 | --- | --- |
 | 开发笔记（5 篇） | Java 应用全流程部署实践、Spring Boot 4 版 hdfk7-boot、Spring Boot 3 版 hdfk7-boot、Ubuntu / Kubernetes / Rancher 部署、MySQL 时间分组统计 |
 | 旅行记录（8 篇） | 峨眉山雪景、九皇山、瓦屋山、都江堰、街子与元通、四姑娘山、西安与华山、理小路 |
-| 生活随笔（0 篇） | 暂无，保留分类入口 |
+| 生活随笔（1 篇） | 小站是怎么跑起来的 |
 | 工具备忘（2 篇） | Arthas 使用笔记、Docker Swarm 集群速查 |
 
 ## 新增与维护文章
