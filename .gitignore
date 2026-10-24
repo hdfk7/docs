@@ -1,0 +1,46 @@
+# Build tools
+target/
+build/
+.gradle/
+dependency-reduced-pom.xml
+pom.xml.versionsBackup
+*.versionsBackup
+
+# IDEs and editors
+.idea/
+*.iml
+*.ipr
+*.iws
+.vscode/
+.fleet/
+.classpath
+.project
+.settings/
+.factorypath
+
+# Logs, caches, and temporary files
+*.log
+*.cache
+*.tmp
+*.temp
+*.swp
+*.swo
+*~
+.jython_cache/
+
+# Local environment
+.env
+.env.*
+!.env.example
+
+# Operating system files
+.DS_Store
+.AppleDouble
+.LSOverride
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+
+.workbuddy/

@@ -1,0 +1,3 @@
+# 请求所有遵守 robots.txt 的爬虫停止抓取全站。
+User-agent: *
+Disallow: /
