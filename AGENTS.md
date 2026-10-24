@@ -32,7 +32,7 @@
 - 新增或修改颜色时，浅色规则照常写在原位置；暗色覆盖统一追加到 `app/app.css` 末尾「主题层」，用 `html[data-theme="dark"]` 前缀（多一层属性即可压过原规则，不要用 `!important`）。带背景或边框的组件容易漏，加完用暗色截图过一遍。
 - 通用文字与分隔线优先用 `var(--ink)`、`var(--muted)`、`var(--line)`，这三个变量在暗色下会自动置换，无需单独覆盖。
 - `index.html` 与 `404.html` 的 `<head>` 里那段内联主题脚本必须留在样式表之前，删掉会出现首屏先亮后暗的闪烁。
-- 主题开关的图标切换只做同轴心缩放 + 分两拍淡入淡出：旧图标 0.12s 淡出缩小，新图标延迟 0.1s 再 0.2s 淡入放大，两者可见时间不重叠（实测 0 帧重叠）。不要加旋转——太阳正转、月亮反转会让 18px 的小图标在切换瞬间轮廓乱跳，看起来像抖。动到这几个选择器时，记得同步 `prefers-reduced-motion` 那条（它要用 `html[data-theme]` 前缀才压得过暗色规则）。
+- 主题开关的太阳与月亮是**同一个 `<svg>` 里的两个 `<g>`**（`.theme-icon-sun` / `.theme-icon-moon`），切换只改两个分组的 `opacity`：旧图标 0.12s 淡出，新图标延迟 0.1s 再 0.2s 淡入。不要退回「两个 svg 叠放」的老写法，也不要加缩放或旋转——iOS Safari 上两个绝对定位的 svg 会先按原位绘制再归位，观感是「先显示、再从上面挪下来」；`transform:scale()` 还会让 18px 图标进合成层重采样，边缘抖约 1px。单 svg 方案实测：`svg 个数=1`、盒子恒为 18×18、切换全程中心恒为 1095.5/49.5。svg 用常规流内布局（`display:block`）由按钮的 flex 居中，不要再写 `position:absolute`。动到这几个选择器时，记得同步 `prefers-reduced-motion` 那条（它要用 `html[data-theme]` 前缀才压得过暗色规则）。
 - 换页时 `renderRoute()` 会整段重建 `#app-view`，阅读页要先出空壳再 fetch md。`html` 上的 `scrollbar-gutter:stable` 和 `.reader-paper:has(#article-status){min-height:calc(100vh - 150px)}` 这两条是用来稳住这个中间态的：前者保证没滚动条时宽度不跳，后者保证空壳不短于一屏、滚动条不闪。改动页面骨架或加载逻辑时别把它们当冗余删掉，否则切到简历/游记会横向抖一下。
 - 换页的中间态交给 `<main>` 上的 `view-leave` / `view-enter` 两段动画：点击先淡出 80ms，再换 DOM，最后淡入 220ms。只有 `<main>` 参与，导航和页脚不动——点中的链接不会自己消失，主题开关也不会跟着闪；淡出那 80ms 里内容还在、高度不变，正好把 `scrollTo(0,0)` 的跳变盖住。别再往 `renderRoute()` 外面套整页淡入淡出。首屏不播入场（`hasRenderedPage` 控制），`prefers-reduced-motion` 下两段动画都关掉并跳过等待直接渲染；连点由 `leaveToken` 去重，只保留最后一次目标。
 - 交互态（`:hover`、`:active`）的颜色也要覆盖。全局 `a:hover{color:#000}` 是为白底写的，直接落到深色底上等于文字消失（页脚链接实测对比度 1.16:1）。暗色层末尾有一条 `html[data-theme="dark"] a:hover` 兜底，新组件若要自定义 hover 颜色，用自己的选择器写即可（优先级高于兜底）；改完后用 CDP 的 `CSS.forcePseudoState` 或真实鼠标事件测量，别只看静态截图。
