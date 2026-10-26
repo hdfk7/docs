@@ -1,0 +1,17 @@
+# 统一换行符：仓库内一律 LF，避免脚本在 Linux 上因 CRLF 报 bad interpreter
+* text=auto
+
+*.sh text eol=lf
+*.bat text eol=crlf
+
+# 二进制资源不做换行转换
+*.jpg binary
+*.jpeg binary
+*.JPG binary
+*.JPEG binary
+*.png binary
+*.ico binary
+*.pdf binary
+*.mp4 binary
+*.mov binary
+*.MOV binary
