@@ -5,6 +5,7 @@ set -Eeuo pipefail
 repo_url='https://gitee.com/hdfk7/docs.git'
 repo_branch='master'
 deploy_dir='/usr/share/nginx/default'
+iptv_dir='static/iptv'
 work_dir="$(pwd -P)/hdfk7-deploy"
 repo_dir="$work_dir/repo"
 payload_dir="$work_dir/payload"
@@ -66,6 +67,7 @@ mkdir -p -- "$payload_dir"
 rsync -rlt --delete --delete-excluded --chmod=D755,F644 \
     --exclude='.git' --exclude='.gitignore' \
     --exclude='.gitattributes' --exclude='.gitmodules' \
+    --exclude="/$iptv_dir" \
     -- "$repo_dir/" "$payload_dir/"
 
 # 只修改待部署副本的资源版本号，保持缓存 Git 仓库干净。
@@ -82,14 +84,15 @@ done
 # 镜像同步会删除目标多余文件，待部署副本必须完整，否则会误删线上内容。
 [[ -f "$payload_dir/index.html" ]] || { printf '待部署目录缺少 index.html，停止部署。\n' >&2; exit 1; }
 printf '镜像同步到 %s（增量传输，删除目标多余文件）…\n' "$deploy_real"
-if ! rsync -rlt --delete --chmod=D755,F644 -- "$payload_dir/" "$deploy_real/"; then
+# 排除项在目标端也受保护，保留独立维护的 IPTV 目录。
+if ! rsync -rlt --delete --chmod=D755,F644 --exclude="/$iptv_dir" -- "$payload_dir/" "$deploy_real/"; then
     printf '同步 %s 失败，目标可能残留部分已删除或已更新的文件，确认原因后重跑本脚本即可。\n' "$deploy_real" >&2
     exit 1
 fi
 
-# 同步后核对文件数，确认目标与待部署副本一致。
+# IPTV 目录不参与同步，也不计入目标文件数。
 payload_files="$(find "$payload_dir" -type f | wc -l | tr -d ' ')"
-deploy_files="$(find "$deploy_real" -type f | wc -l | tr -d ' ')"
+deploy_files="$(find "$deploy_real" -path "$deploy_real/$iptv_dir" -prune -o -type f -print | wc -l | tr -d ' ')"
 if [[ "$payload_files" -ne "$deploy_files" ]]; then
     printf '文件数不一致：待部署 %s 个，部署目录 %s 个，请检查后再上线。\n' "$payload_files" "$deploy_files" >&2
     exit 1
